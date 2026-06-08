@@ -105,26 +105,64 @@
 
     .nav-links a:hover { color: var(--accent); }
 
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-muted);
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); background: var(--accent); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); background: var(--accent); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 57px;
+      left: 0;
+      right: 0;
+      background: rgba(8,12,16,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--accent); }
+
     /* ── SECTIONS ── */
     section { position: relative; z-index: 1; }
-
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 120px 48px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      width: 100%;
-    }
 
     .hero-tag {
       font-family: var(--mono);
@@ -967,8 +1005,10 @@
       .nav-links { display: none; }
 
       #hero { padding: 100px 24px 60px; }
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero-card { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 0; }
+      .hero-avatar-col { order: -1; margin-bottom: 0; }
+      .avatar-scene { max-width: 260px; margin: 0 auto; }
+      .hero-stats { gap: 12px; }
 
       .section-wrap { padding: 60px 24px; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -978,6 +1018,7 @@
       .timeline-meta { border-right: none; border-bottom: 1px solid var(--border); }
       .pbi-body { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 8px; text-align: center; }
+      .projects-grid { grid-template-columns: 1fr; }
     }
 
     /* ── SCROLL PROGRESS ── */
@@ -989,6 +1030,266 @@
       background: var(--accent);
       z-index: 200;
       transition: width 0.1s;
+    }
+
+    /* ── HERO LAYOUT NUEVO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-text-col { display: flex; flex-direction: column; gap: 0; }
+
+    /* TYPEWRITER */
+    .hero-title {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      letter-spacing: 0.02em;
+      min-height: 20px;
+    }
+
+    .cursor-blink {
+      color: var(--accent);
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* MINI STATS */
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .hstat { display: flex; flex-direction: column; gap: 2px; }
+    .hstat-val {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+    .hstat-val.accent-text { color: var(--accent); }
+    .hstat-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .hstat-div {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
+    }
+
+    /* AVATAR COLUMN */
+    .hero-avatar-col {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      perspective: 800px;
+    }
+
+    .avatar-scene {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      transition: transform 0.1s ease-out;
+    }
+
+    .avatar-svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 40px rgba(0,229,160,0.12));
+      animation: avatarFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes avatarFloat {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* ÓRBITAS */
+    .orbit-ring { transform-origin: 210px 230px; }
+    .orbit1 { animation: orbitSpin 12s linear infinite; }
+    .orbit2 { animation: orbitSpin 18s linear infinite reverse; }
+    .orbit3 { animation: orbitSpin 8s linear infinite; }
+    @keyframes orbitSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* FLOAT TEXT en avatar */
+    .float-text { animation: floatText 3s ease-in-out infinite; }
+    @keyframes floatText {
+      0%,100% { transform: translateY(0); opacity: 0.4; }
+      50% { transform: translateY(-5px); opacity: 0.7; }
+    }
+
+    /* BADGE flotante */
+    .avatar-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.25);
+      backdrop-filter: blur(10px);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      white-space: nowrap;
+      animation: badgePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(0,229,160,0.15); }
+      50% { box-shadow: 0 0 20px 4px rgba(0,229,160,0.1); }
+    }
+    /* ── HERO AVATAR GRANDE ── */
+    .hero-avatar-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      animation: heroFloat 4s ease-in-out infinite;
+    }
+    @keyframes heroFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    .hero-avatar-svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 50px rgba(0,229,160,0.15));
+    }
+
+    /* ══ ASISTENTE FLOTANTE STICKY ══ */
+    #floatingAssistant {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      pointer-events: none;
+    }
+    #assistantBubble {
+      position: relative;
+      background: rgba(13,17,23,0.95);
+      border: 1px solid rgba(0,229,160,0.3);
+      backdrop-filter: blur(16px);
+      padding: 12px 16px;
+      max-width: 240px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(0,229,160,0.1);
+    }
+    #assistantBubble.visible { opacity: 1; transform: translateY(0) scale(1); }
+    #bubbleTail {
+      position: absolute;
+      bottom: -8px;
+      right: 54px;
+      width: 0; height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid rgba(0,229,160,0.3);
+    }
+    #bubbleTail::after {
+      content: '';
+      position: absolute;
+      top: -9px; left: -7px;
+      width: 0; height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid rgba(13,17,23,0.95);
+    }
+    #assistantAvatar {
+      width: 80px; height: 80px;
+      cursor: pointer;
+      pointer-events: all;
+      position: relative;
+      transition: transform 0.15s ease;
+      filter: drop-shadow(0 0 16px rgba(0,229,160,0.25));
+    }
+    #assistantAvatar:hover { transform: scale(1.08); }
+    #assistantAvatar:active { transform: scale(0.95); }
+    #assistantAvatar svg {
+      width: 100%; height: 100%;
+      animation: assistantFloat 3s ease-in-out infinite;
+    }
+    @keyframes assistantFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    #sectionIndicator {
+      position: absolute;
+      top: -6px; right: -6px;
+      width: 18px; height: 18px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      font-family: var(--mono);
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: 700;
+      animation: indicatorPulse 2s ease-in-out infinite;
+    }
+    @keyframes indicatorPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(0,229,160,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(0,229,160,0); }
+    }
+    #floatingAssistant.state-excited #assistantAvatar svg {
+      animation: assistantExcited 0.55s ease-in-out infinite;
+    }
+    @keyframes assistantExcited {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-8px) scale(1.05); }
+    }
+    #floatingAssistant.state-thinking #assistantAvatar svg {
+      animation: assistantThink 1.2s ease-in-out infinite;
+    }
+    @keyframes assistantThink {
+      0%,100% { transform: rotate(0deg) translateY(0); }
+      30% { transform: rotate(-4deg) translateY(-3px); }
+      70% { transform: rotate(4deg) translateY(-3px); }
+    }
+    @media (max-width: 900px) {
+      #floatingAssistant { bottom: 16px; right: 16px; }
+      #assistantAvatar { width: 60px; height: 60px; }
+      #assistantBubble { max-width: 180px; font-size: 11px; }
     }
   </style>
 </head>
@@ -1005,49 +1306,307 @@
     <li><a href="#experience">Experiencia</a></li>
     <li><a href="#contact">Contacto</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobileMenu()">Sobre mí</a>
+  <a href="#stack" onclick="closeMobileMenu()">Stack</a>
+  <a href="#projects" onclick="closeMobileMenu()">Proyectos</a>
+  <a href="#experience" onclick="closeMobileMenu()">Experiencia</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contacto</a>
+</div>
+
 <!-- ══════════ HERO ══════════ -->
+<canvas id="particleCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.6;"></canvas>
+
+<!-- ════ ASISTENTE FLOTANTE STICKY ════ -->
+<div id="floatingAssistant">
+  <div id="assistantBubble">
+    <div id="bubbleText">¡Hola! Soy Nico. Scrollea para conocerme 👋</div>
+    <div id="bubbleTail"></div>
+  </div>
+  <div id="assistantAvatar" title="¡Interactúa conmigo!">
+    <svg id="assistantSVG" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="aGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00e5a0" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#00e5a0" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="aSkin" cx="40%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#d4956a"/>
+          <stop offset="100%" stop-color="#b87040"/>
+        </radialGradient>
+        <radialGradient id="aBody" cx="40%" cy="20%" r="80%">
+          <stop offset="0%" stop-color="#1a2f3f"/>
+          <stop offset="100%" stop-color="#0d1520"/>
+        </radialGradient>
+        <filter id="aGlowF">
+          <feGaussianBlur stdDeviation="2.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <linearGradient id="aAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00e5a0"/>
+          <stop offset="100%" stop-color="#0099ff"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Glow fondo -->
+      <circle cx="60" cy="80" r="55" fill="url(#aGlow)"/>
+
+      <!-- CUERPO -->
+      <rect x="30" y="90" width="60" height="60" rx="20" fill="url(#aBody)"/>
+      <!-- Línea acento -->
+      <rect x="30" y="90" width="60" height="3" rx="1.5" fill="url(#aAccent)" opacity="0.8"/>
+      <!-- Badge DATA en ropa -->
+      <rect x="43" y="100" width="34" height="14" rx="3" fill="#0d1117" stroke="#00e5a0" stroke-width="0.7"/>
+      <text x="60" y="111" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#00e5a0">DATA</text>
+
+      <!-- BRAZOS (se animan por estado) -->
+      <g id="aArmLeft">
+        <path d="M30 98 Q15 112 20 128" fill="none" stroke="url(#aBody)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M30 98 Q15 112 20 128" fill="none" stroke="#1a2f3f" stroke-width="10" stroke-linecap="round"/>
+      </g>
+      <g id="aArmRight">
+        <path d="M90 98 Q105 112 100 128" fill="none" stroke="url(#aBody)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M90 98 Q105 112 100 128" fill="none" stroke="#1a2f3f" stroke-width="10" stroke-linecap="round"/>
+      </g>
+
+      <!-- PIERNAS -->
+      <rect x="38" y="144" width="18" height="14" rx="6" fill="#0d1117"/>
+      <rect x="64" y="144" width="18" height="14" rx="6" fill="#0a0f15"/>
+      <ellipse cx="47" cy="158" rx="12" ry="4" fill="#080c10"/>
+      <ellipse cx="73" cy="158" rx="12" ry="4" fill="#080c10"/>
+
+      <!-- CUELLO -->
+      <rect x="53" y="72" width="14" height="22" rx="6" fill="url(#aSkin)"/>
+
+      <!-- CABEZA -->
+      <ellipse cx="60" cy="52" rx="30" ry="34" fill="url(#aSkin)"/>
+
+      <!-- PELO -->
+      <path d="M30 44 Q31 16 60 13 Q89 16 90 44 Q84 26 60 24 Q36 26 30 44Z" fill="#1a0800"/>
+      <path d="M30 44 Q28 34 31 26 Q33 34 37 40Z" fill="#1a0800"/>
+      <path d="M90 44 Q92 34 89 26 Q87 34 83 40Z" fill="#1a0800"/>
+
+      <!-- OJOS base -->
+      <ellipse id="aEyeL" cx="48" cy="50" rx="6" ry="6.5" fill="#fff"/>
+      <ellipse id="aEyeR" cx="72" cy="50" rx="6" ry="6.5" fill="#fff"/>
+      <ellipse id="aPupilL" cx="49" cy="51" rx="3.5" ry="4" fill="#1a0800"/>
+      <ellipse id="aPupilR" cx="73" cy="51" rx="3.5" ry="4" fill="#1a0800"/>
+      <circle cx="50" cy="49" r="1.2" fill="#fff" opacity="0.9"/>
+      <circle cx="74" cy="49" r="1.2" fill="#fff" opacity="0.9"/>
+      <!-- iris -->
+      <circle id="aIrisL" cx="49" cy="51" r="1.8" fill="#00a86b" opacity="0.7"/>
+      <circle id="aIrisR" cx="73" cy="51" r="1.8" fill="#00a86b" opacity="0.7"/>
+
+      <!-- CEJAS (animadas) -->
+      <path id="aBrowL" d="M40 40 Q48 36 56 40" fill="none" stroke="#1a0800" stroke-width="2" stroke-linecap="round"/>
+      <path id="aBrowR" d="M64 40 Q72 36 80 40" fill="none" stroke="#1a0800" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- NARIZ -->
+      <path d="M58 57 Q56 63 59 64 Q62 63 62 57" fill="none" stroke="#9a6535" stroke-width="1.2" stroke-linecap="round"/>
+
+      <!-- BOCA (animada) -->
+      <path id="aMouth" d="M51 70 Q60 76 69 70" fill="none" stroke="#9a6535" stroke-width="1.8" stroke-linecap="round"/>
+
+      <!-- AURICULARES -->
+      <path d="M30 50 Q27 57 29 64" fill="none" stroke="#21262d" stroke-width="4" stroke-linecap="round"/>
+      <rect x="26" y="60" width="7" height="10" rx="3" fill="#161b22" stroke="#00e5a0" stroke-width="0.6"/>
+      <path d="M90 50 Q93 57 91 64" fill="none" stroke="#21262d" stroke-width="4" stroke-linecap="round"/>
+      <rect x="87" y="60" width="7" height="10" rx="3" fill="#161b22" stroke="#00e5a0" stroke-width="0.6"/>
+
+      <!-- Partículas orbitando (pequeñas) -->
+      <g id="aOrbit1" filter="url(#aGlowF)">
+        <circle r="5" fill="#00e5a0" opacity="0.9"/>
+        <text y="2" text-anchor="middle" font-family="JetBrains Mono" font-size="4" fill="#000" font-weight="bold">PBI</text>
+      </g>
+      <g id="aOrbit2" filter="url(#aGlowF)">
+        <circle r="5" fill="#0099ff" opacity="0.9"/>
+        <text y="2" text-anchor="middle" font-family="JetBrains Mono" font-size="4" fill="#000" font-weight="bold">SQL</text>
+      </g>
+      <g id="aOrbit3" filter="url(#aGlowF)">
+        <circle r="5" fill="#ff6b35" opacity="0.9"/>
+        <text y="2" text-anchor="middle" font-family="JetBrains Mono" font-size="4" fill="#000" font-weight="bold">AI</text>
+      </g>
+    </svg>
+
+    <!-- Indicador de sección -->
+    <div id="sectionIndicator"></div>
+  </div>
+</div>
+
 <section id="hero">
   <div class="hero-inner">
-    <div>
+    <div class="hero-text-col">
       <div class="hero-tag">Available for new opportunities</div>
       <h1 class="hero-name">
         Nicolás<br><span class="accent">Barragán</span>
       </h1>
-      <div class="hero-title">Data Analyst &amp; Systems Developer · Facatativá, Colombia</div>
+      <div class="hero-title">
+        <span id="typewriter"></span><span class="cursor-blink">|</span>
+      </div>
       <p class="hero-desc">
         Más de 4 años convirtiendo procesos manuales en <strong>flujos digitales que funcionan de verdad</strong>. Diseño pipelines ETL, sistemas web internos completos y dashboards ejecutivos. Si puedo imaginarlo, puedo construirlo — y si hay IA que lo haga más rápido, la uso.
       </p>
       <div class="hero-cta">
         <a href="mailto:nico0223@outlook.es" class="btn-primary">→ Escribirme</a>
-        <a href="CV_Nicolas_Barragan_2026.pdf" class="btn-secondary" download>↓ Descargar CV</a>
+        <a href="CV%20Nicolas%20Barragan%202026.pdf" class="btn-secondary" download>↓ Descargar CV</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hstat-val">4+</span><span class="hstat-label">años exp.</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-val">6+</span><span class="hstat-label">sistemas</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-val accent-text">0.1%</span><span class="hstat-label">faltantes</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-val">−40%</span><span class="hstat-label">t. respuesta</span></div>
       </div>
     </div>
 
-    <div class="hero-card">
-      <div class="card-header">
-        <span class="dot dot-red"></span>
-        <span class="dot dot-yellow"></span>
-        <span class="dot dot-green"></span>
-        <span class="card-title">metrics.overview</span>
-      </div>
-      <div class="stat-grid">
-        <div class="stat">
-          <div class="stat-value">4+</div>
-          <div class="stat-label">Años de experiencia</div>
-        </div>
-        <div class="stat blue">
-          <div class="stat-value">6+</div>
-          <div class="stat-label">Sistemas construidos</div>
-        </div>
-        <div class="stat orange">
-          <div class="stat-value">60%→0.1%</div>
-          <div class="stat-label">Reducción de faltantes</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">40%</div>
-          <div class="stat-label">Mejora respuesta ops</div>
+    <!-- HERO AVATAR grande (decorativo, no sticky) -->
+    <div class="hero-avatar-col">
+      <div class="hero-avatar-wrap" id="heroAvatarWrap">
+        <svg class="hero-avatar-svg" viewBox="0 0 340 420" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="hGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00e5a0" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="#00e5a0" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="hSkin" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#d4956a"/>
+              <stop offset="100%" stop-color="#b87040"/>
+            </radialGradient>
+            <radialGradient id="hBody" cx="40%" cy="20%" r="80%">
+              <stop offset="0%" stop-color="#1a2f3f"/>
+              <stop offset="100%" stop-color="#0d1520"/>
+            </radialGradient>
+            <radialGradient id="hScreen" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#001a0f"/>
+              <stop offset="100%" stop-color="#000c07"/>
+            </radialGradient>
+            <filter id="hGlowF">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <linearGradient id="hAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#00e5a0"/>
+              <stop offset="100%" stop-color="#0099ff"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Glow radial de fondo -->
+          <circle cx="170" cy="180" r="160" fill="url(#hGlow)"/>
+          <ellipse cx="170" cy="360" rx="100" ry="20" fill="#00e5a0" opacity="0.05"/>
+
+          <!-- ÓRBITAS decorativas -->
+          <ellipse cx="170" cy="185" rx="138" ry="50" fill="none" stroke="#00e5a0" stroke-width="0.6" stroke-dasharray="5 7" opacity="0.2"/>
+          <ellipse cx="170" cy="185" rx="155" ry="60" fill="none" stroke="#0099ff" stroke-width="0.5" stroke-dasharray="3 9" opacity="0.15"/>
+
+          <!-- NODOS orbitando (JS los mueve) -->
+          <g id="hNode1" filter="url(#hGlowF)">
+            <circle r="11" fill="#00e5a0" opacity="0.95"/>
+            <text y="4" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#000" font-weight="bold">PBI</text>
+          </g>
+          <g id="hNode2" filter="url(#hGlowF)">
+            <circle r="11" fill="#0099ff" opacity="0.95"/>
+            <text y="4" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#000" font-weight="bold">SQL</text>
+          </g>
+          <g id="hNode3" filter="url(#hGlowF)">
+            <circle r="10" fill="#ff6b35" opacity="0.9"/>
+            <text y="4" text-anchor="middle" font-family="JetBrains Mono" font-size="6.5" fill="#000" font-weight="bold">ETL</text>
+          </g>
+          <g id="hNode4" filter="url(#hGlowF)">
+            <circle r="10" fill="#00e5a0" opacity="0.8"/>
+            <text y="4" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#000" font-weight="bold">GAS</text>
+          </g>
+          <g id="hNode5" filter="url(#hGlowF)">
+            <circle r="10" fill="#0099ff" opacity="0.8"/>
+            <text y="4" text-anchor="middle" font-family="JetBrains Mono" font-size="6.5" fill="#000" font-weight="bold">PY</text>
+          </g>
+
+          <!-- Sombra -->
+          <ellipse cx="171" cy="348" rx="60" ry="10" fill="#000" opacity="0.35"/>
+
+          <!-- PIERNAS -->
+          <rect x="142" y="302" width="24" height="44" rx="8" fill="#0d1117"/>
+          <rect x="174" y="302" width="24" height="44" rx="8" fill="#0a0f15"/>
+          <ellipse cx="154" cy="346" rx="16" ry="6" fill="#080c10"/>
+          <ellipse cx="186" cy="346" rx="16" ry="6" fill="#080c10"/>
+
+          <!-- TORSO -->
+          <rect x="128" y="196" width="84" height="114" rx="16" fill="url(#hBody)"/>
+          <rect x="128" y="196" width="84" height="4" rx="2" fill="url(#hAccent)" opacity="0.7"/>
+          <!-- badge -->
+          <rect x="151" y="210" width="38" height="18" rx="4" fill="#0d1117" stroke="#00e5a0" stroke-width="0.8"/>
+          <text x="170" y="223" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#00e5a0">DATA</text>
+
+          <!-- LAPTOP -->
+          <rect x="116" y="252" width="108" height="68" rx="6" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
+          <rect x="120" y="256" width="100" height="58" rx="4" fill="url(#hScreen)"/>
+          <text x="128" y="272" font-family="JetBrains Mono" font-size="5.5" fill="#00e5a0" opacity="0.9">const etl = pipeline()</text>
+          <text x="128" y="283" font-family="JetBrains Mono" font-size="5.5" fill="#0099ff" opacity="0.8">  .transform(data)</text>
+          <text x="128" y="294" font-family="JetBrains Mono" font-size="5.5" fill="#7d8590" opacity="0.7">  .visualize(pbi);</text>
+          <text x="128" y="305" font-family="JetBrains Mono" font-size="5.5" fill="#ff6b35" opacity="0.6">// 0.1% error ✓</text>
+          <rect x="128" y="308" width="7" height="2" rx="1" fill="#00e5a0">
+            <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
+          </rect>
+
+          <!-- BRAZOS -->
+          <path d="M128 210 Q106 234 116 262" fill="none" stroke="#1a2f3f" stroke-width="20" stroke-linecap="round"/>
+          <path d="M128 210 Q106 234 116 262" fill="none" stroke="#0d1520" stroke-width="15" stroke-linecap="round"/>
+          <path d="M212 210 Q234 234 224 262" fill="none" stroke="#1a2f3f" stroke-width="20" stroke-linecap="round"/>
+          <path d="M212 210 Q234 234 224 262" fill="none" stroke="#0d1520" stroke-width="15" stroke-linecap="round"/>
+
+          <!-- CUELLO -->
+          <rect x="160" y="178" width="20" height="24" rx="8" fill="url(#hSkin)"/>
+
+          <!-- CABEZA -->
+          <ellipse cx="170" cy="150" rx="48" ry="52" fill="url(#hSkin)"/>
+
+          <!-- PELO -->
+          <path d="M122 136 Q124 94 170 90 Q216 94 218 136 Q210 108 170 106 Q130 108 122 136Z" fill="#1a0800"/>
+          <path d="M122 136 Q120 122 124 110 Q127 122 132 130Z" fill="#1a0800"/>
+          <path d="M218 136 Q220 122 216 110 Q213 122 208 130Z" fill="#1a0800"/>
+
+          <!-- OJOS -->
+          <ellipse cx="150" cy="148" rx="9" ry="9.5" fill="#fff"/>
+          <ellipse cx="190" cy="148" rx="9" ry="9.5" fill="#fff"/>
+          <ellipse cx="151" cy="149" rx="5.5" ry="6" fill="#1a0800"/>
+          <ellipse cx="191" cy="149" rx="5.5" ry="6" fill="#1a0800"/>
+          <circle cx="153" cy="147" r="1.8" fill="#fff" opacity="0.9"/>
+          <circle cx="193" cy="147" r="1.8" fill="#fff" opacity="0.9"/>
+          <circle cx="151" cy="149" r="2.5" fill="#00a86b" opacity="0.6"/>
+          <circle cx="191" cy="149" r="2.5" fill="#00a86b" opacity="0.6"/>
+
+          <!-- CEJAS -->
+          <path d="M139 135 Q150 130 161 135" fill="none" stroke="#1a0800" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M179 135 Q190 130 201 135" fill="none" stroke="#1a0800" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- NARIZ -->
+          <path d="M167 158 Q165 168 168 170 Q171 168 171 158" fill="none" stroke="#9a6535" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- SONRISA -->
+          <path d="M157 177 Q170 185 183 177" fill="none" stroke="#9a6535" stroke-width="2" stroke-linecap="round"/>
+
+          <!-- AURICULARES -->
+          <path d="M122 148 Q118 158 120 168" fill="none" stroke="#21262d" stroke-width="5" stroke-linecap="round"/>
+          <rect x="116" y="163" width="10" height="14" rx="4" fill="#161b22" stroke="#00e5a0" stroke-width="0.8"/>
+          <path d="M218 148 Q222 158 220 168" fill="none" stroke="#21262d" stroke-width="5" stroke-linecap="round"/>
+          <rect x="214" y="163" width="10" height="14" rx="4" fill="#161b22" stroke="#00e5a0" stroke-width="0.8"/>
+
+          <!-- DATA STREAMS -->
+          <text x="48" y="155" font-family="JetBrains Mono" font-size="9" fill="#00e5a0" opacity="0.35">01</text>
+          <text x="36" y="175" font-family="JetBrains Mono" font-size="8" fill="#0099ff" opacity="0.3">ETL</text>
+          <text x="274" y="150" font-family="JetBrains Mono" font-size="9" fill="#0099ff" opacity="0.35">BI</text>
+          <text x="268" y="170" font-family="JetBrains Mono" font-size="8" fill="#ff6b35" opacity="0.3">AI</text>
+        </svg>
+
+        <div class="avatar-badge">
+          <span class="pulse"></span>
+          Open to work · Jun 2026
         </div>
       </div>
     </div>
@@ -1439,11 +1998,11 @@
             <p>nico0223@outlook.es</p>
           </div>
         </a>
-        <a href="https://linkedin.com/in/nicolasbarraganalfonso" class="contact-link" target="_blank">
+        <a href="https://www.linkedin.com/in/nicolas-barragan-alfonso-21b06218a/" class="contact-link" target="_blank">
           <div class="contact-link-icon">in</div>
           <div class="contact-link-info">
             <h4>LinkedIn</h4>
-            <p>nicolasbarraganalfonso</p>
+            <p>nicolas-barragan-alfonso</p>
           </div>
         </a>
         <a href="https://github.com/nicolasbarragan-ux" class="contact-link" target="_blank">
@@ -1471,18 +2030,335 @@
 </footer>
 
 <script>
+  // ── SCROLL TO TOP ──
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
+  // ── HAMBURGER ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
   // ── SCROLL PROGRESS ──
   const progress = document.getElementById('progress');
   window.addEventListener('scroll', () => {
-    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    progress.style.width = scrolled + '%';
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    progress.style.width = pct + '%';
   });
+
+  // ── TYPEWRITER ──
+  const phrases = [
+    'Data Analyst & Systems Developer',
+    'ETL Pipeline Architect',
+    'Power BI · DAX Avanzado',
+    'Full-Stack · GAS + Firebase',
+    'Mejora continua · Optimización',
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const tw = document.getElementById('typewriter');
+  function type() {
+    const cur = phrases[pi];
+    if (!deleting) {
+      tw.textContent = cur.slice(0, ++ci);
+      if (ci === cur.length) { deleting = true; setTimeout(type, 2200); return; }
+    } else {
+      tw.textContent = cur.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 38 : 68);
+  }
+  setTimeout(type, 700);
+
+  // ── PARTÍCULAS ──
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = { x: -9999, y: -9999 };
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * W; this.y = Math.random() * H;
+      this.size = Math.random() * 1.4 + 0.3;
+      this.vx = (Math.random() - 0.5) * 0.35; this.vy = (Math.random() - 0.5) * 0.35;
+      this.color = Math.random() > 0.55 ? '#00e5a0' : Math.random() > 0.5 ? '#0099ff' : '#ffffff';
+      this.alpha = Math.random() * 0.45 + 0.1;
+      this.life = Math.random() * 220 + 80; this.age = 0;
+    }
+    update() {
+      const dx = mouse.x - this.x, dy = mouse.y - this.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 110) { const f = (110 - d) / 110 * 0.28; this.x -= dx * f * 0.05; this.y -= dy * f * 0.05; }
+      this.x += this.vx; this.y += this.vy; this.age++;
+      if (this.age > this.life || this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+    }
+    draw() {
+      ctx.save(); ctx.globalAlpha = this.alpha * (1 - this.age / this.life);
+      ctx.fillStyle = this.color; ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    }
+  }
+  for (let i = 0; i < 130; i++) particles.push(new Particle());
+  function drawConn() {
+    for (let i = 0; i < particles.length; i++) for (let j = i+1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 75) { ctx.save(); ctx.globalAlpha = (1 - d/75) * 0.07; ctx.strokeStyle = '#00e5a0'; ctx.lineWidth = 0.4; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); ctx.restore(); }
+    }
+  }
+  (function animP() { ctx.clearRect(0,0,W,H); particles.forEach(p => { p.update(); p.draw(); }); drawConn(); requestAnimationFrame(animP); })();
+
+  // ── NODOS ORBITANDO (hero grande) ──
+  const hNodes = [
+    { el: document.getElementById('hNode1'), rx:138, ry:50, cx:170, cy:185, a:0,   sp:0.011 },
+    { el: document.getElementById('hNode2'), rx:155, ry:60, cx:170, cy:185, a:2.1, sp:-0.007 },
+    { el: document.getElementById('hNode3'), rx:125, ry:45, cx:170, cy:185, a:4.2, sp:0.015 },
+    { el: document.getElementById('hNode4'), rx:145, ry:55, cx:170, cy:185, a:1.0, sp:-0.010 },
+    { el: document.getElementById('hNode5'), rx:132, ry:48, cx:170, cy:185, a:3.3, sp:0.008 },
+  ];
+  (function animHNodes() {
+    hNodes.forEach(n => {
+      if (!n.el) return;
+      n.a += n.sp;
+      n.el.setAttribute('transform', `translate(${n.cx + n.rx * Math.cos(n.a)},${n.cy + n.ry * Math.sin(n.a)})`);
+    });
+    requestAnimationFrame(animHNodes);
+  })();
+
+  // ── PARALLAX HERO AVATAR ──
+  const heroWrap = document.getElementById('heroAvatarWrap');
+  document.addEventListener('mousemove', e => {
+    if (!heroWrap) return;
+    const dx = (e.clientX / window.innerWidth - 0.5) * 12;
+    const dy = (e.clientY / window.innerHeight - 0.5) * 8;
+    heroWrap.style.transform = `perspective(800px) rotateY(${dx}deg) rotateX(${-dy}deg) translateY(${Math.sin(Date.now()/1000*0.5)*-14}px)`;
+  });
+
+  // ══════════════════════════════════════════════
+  // ══ ASISTENTE FLOTANTE — NÚCLEO CENTRAL ══════
+  // ══════════════════════════════════════════════
+  const assistant = document.getElementById('floatingAssistant');
+  const bubble = document.getElementById('assistantBubble');
+  const bubbleText = document.getElementById('bubbleText');
+  const avatarEl = document.getElementById('assistantAvatar');
+  const indicator = document.getElementById('sectionIndicator');
+
+  // Nodos del asistente pequeño que orbitan
+  const aNodes = [
+    { el: document.getElementById('aOrbit1'), rx:52, ry:20, cx:60, cy:80, a:0,   sp:0.025 },
+    { el: document.getElementById('aOrbit2'), rx:55, ry:22, cx:60, cy:80, a:2.1, sp:-0.018 },
+    { el: document.getElementById('aOrbit3'), rx:48, ry:18, cx:60, cy:80, a:4.2, sp:0.022 },
+  ];
+  (function animANodes() {
+    aNodes.forEach(n => {
+      if (!n.el) return;
+      n.a += n.sp;
+      n.el.setAttribute('transform', `translate(${n.cx + n.rx * Math.cos(n.a)},${n.cy + n.ry * Math.sin(n.a)})`);
+    });
+    requestAnimationFrame(animANodes);
+  })();
+
+  // Config de cada sección
+  const sectionConfig = {
+    hero: {
+      emoji: '👋',
+      messages: [
+        '¡Hola! Soy Nico. Scrollea para conocerme 🚀',
+        'Más de 4 años construyendo sistemas que funcionan.',
+        'Descarga mi CV o escríbeme ↑',
+      ],
+      state: 'default',
+      indicator: '👋'
+    },
+    about: {
+      emoji: '🧠',
+      messages: [
+        '¿Cómo hacemos esto mejor? Mi pregunta favorita.',
+        'Análisis + desarrollo = soluciones completas.',
+        'Mejora continua no es un método, es mi mentalidad.',
+      ],
+      state: 'thinking',
+      indicator: '💡'
+    },
+    stack: {
+      emoji: '⚙️',
+      messages: [
+        'Estas son las herramientas que uso a diario.',
+        'Power BI + DAX: datos en decisiones reales.',
+        'GAS + Firebase: sistemas sin servidores propios.',
+        'Python + Pandas: ETL desde cero hasta producción.',
+      ],
+      state: 'excited',
+      indicator: '⚙️'
+    },
+    powerbi: {
+      emoji: '📊',
+      messages: [
+        'Ese dashboard redujo mermas un 25% en Elite Flower.',
+        'DAX avanzado: de datos crudos a insight ejecutivo.',
+        '7 países monitoreados en tiempo real. Así se hace BI.',
+      ],
+      state: 'excited',
+      indicator: '📊'
+    },
+    projects: {
+      emoji: '🚀',
+      messages: [
+        '6+ sistemas en producción. Todos construidos desde cero.',
+        'Del requerimiento al deploy, sin intermediarios.',
+        'Cada proyecto nació de un proceso manual que alguien odiaba.',
+      ],
+      state: 'excited',
+      indicator: '🚀'
+    },
+    experience: {
+      emoji: '💼',
+      messages: [
+        '4+ años, 3 empresas, crecimiento constante.',
+        'En Jardines: 60% → 0.1% de faltantes en 1 mes.',
+        'En Elite Flower: creé el área de cold chain desde cero.',
+        'Coordiné equipos técnicos en China y Colombia.',
+      ],
+      state: 'thinking',
+      indicator: '💼'
+    },
+    contact: {
+      emoji: '📬',
+      messages: [
+        '¿Hablamos? Estoy disponible ahora mismo.',
+        'Escríbeme al correo o en LinkedIn.',
+        'Un buen equipo + datos bien usados = resultados reales.',
+      ],
+      state: 'excited',
+      indicator: '📬'
+    }
+  };
+
+  let currentSection = 'hero';
+  let msgIndex = 0;
+  let bubbleTimer = null;
+  let hideTimer = null;
+  let isUserHover = false;
+
+  function showBubble(text) {
+    clearTimeout(hideTimer);
+    bubbleText.textContent = text;
+    bubble.classList.add('visible');
+    if (!isUserHover) {
+      hideTimer = setTimeout(() => bubble.classList.remove('visible'), 4500);
+    }
+  }
+
+  function setSection(sectionId) {
+    if (currentSection === sectionId) return;
+    currentSection = sectionId;
+    msgIndex = 0;
+    const cfg = sectionConfig[sectionId] || sectionConfig.hero;
+
+    // Estado del asistente
+    assistant.className = '';
+    if (cfg.state !== 'default') assistant.classList.add('state-' + cfg.state);
+
+    // Indicador
+    indicator.textContent = cfg.indicator;
+
+    // Cambiar color del indicator según sección
+    const colors = { hero:'#00e5a0', about:'#0099ff', stack:'#00e5a0', powerbi:'#0099ff', projects:'#ff6b35', experience:'#00e5a0', contact:'#0099ff' };
+    indicator.style.background = colors[sectionId] || '#00e5a0';
+
+    // Mostrar mensaje
+    showBubble(cfg.messages[0]);
+
+    // Ciclar mensajes
+    clearInterval(bubbleTimer);
+    if (cfg.messages.length > 1) {
+      bubbleTimer = setInterval(() => {
+        msgIndex = (msgIndex + 1) % cfg.messages.length;
+        showBubble(cfg.messages[msgIndex]);
+      }, 5500);
+    }
+  }
+
+  // Detectar sección activa con IntersectionObserver
+  const sections = ['hero', 'about', 'stack', 'powerbi', 'projects', 'experience', 'contact'];
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+        setSection(entry.target.id);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) sectionObserver.observe(el);
+  });
+
+  // Hover e interacción con el asistente
+  avatarEl.addEventListener('mouseenter', () => {
+    isUserHover = true;
+    clearTimeout(hideTimer);
+    bubble.classList.add('visible');
+  });
+  avatarEl.addEventListener('mouseleave', () => {
+    isUserHover = false;
+    hideTimer = setTimeout(() => bubble.classList.remove('visible'), 2000);
+  });
+
+  // Click: mensaje siguiente
+  avatarEl.addEventListener('click', () => {
+    const cfg = sectionConfig[currentSection] || sectionConfig.hero;
+    msgIndex = (msgIndex + 1) % cfg.messages.length;
+    showBubble(cfg.messages[msgIndex]);
+    // Animación de click
+    avatarEl.style.transform = 'scale(0.88)';
+    setTimeout(() => { avatarEl.style.transform = ''; }, 150);
+  });
+
+  // Parpadeo de ojos del asistente
+  const eyeL = document.getElementById('aEyeL');
+  const eyeR = document.getElementById('aEyeR');
+  const pupilL = document.getElementById('aPupilL');
+  const pupilR = document.getElementById('aPupilR');
+  function blink() {
+    if (!eyeL) return;
+    eyeL.setAttribute('ry', '1'); eyeR.setAttribute('ry', '1');
+    setTimeout(() => { eyeL.setAttribute('ry', '6.5'); eyeR.setAttribute('ry', '6.5'); }, 120);
+    setTimeout(blink, 2800 + Math.random() * 2500);
+  }
+  setTimeout(blink, 1500);
+
+  // Seguimiento de pupila al mouse
+  window.addEventListener('mousemove', e => {
+    if (!pupilL || !pupilR) return;
+    const maxOffset = 1.5;
+    const dx = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX / window.innerWidth - 0.5) * 4));
+    const dy = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY / window.innerHeight - 0.5) * 4));
+    pupilL.setAttribute('cx', 49 + dx); pupilL.setAttribute('cy', 51 + dy);
+    pupilR.setAttribute('cx', 73 + dx); pupilR.setAttribute('cy', 51 + dy);
+    document.getElementById('aIrisL').setAttribute('cx', 49 + dx);
+    document.getElementById('aIrisL').setAttribute('cy', 51 + dy);
+    document.getElementById('aIrisR').setAttribute('cx', 73 + dx);
+    document.getElementById('aIrisR').setAttribute('cy', 51 + dy);
+  });
+
+  // Mostrar bienvenida inicial
+  setTimeout(() => setSection('hero'), 800);
 
   // ── FADE UP ──
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
   // ── BAR CHART ──
@@ -1495,44 +2371,20 @@
     { label: 'BOG→GRU', a: 74, b: 48, c: 15 },
     { label: 'BOG→MAD', a: 88, b: 68, c: 4 },
   ];
-
   const chart = document.getElementById('barChart');
-  const maxVal = 100;
-
-  barData.forEach(d => {
-    const group = document.createElement('div');
-    group.className = 'bar-group';
-
-    const wrap = document.createElement('div');
-    wrap.className = 'bar-wrap';
-
-    [{ v: d.a, cls: '' }, { v: d.b, cls: 'b' }, { v: d.c * 3, cls: 'c' }].forEach(b => {
-      const bar = document.createElement('div');
-      bar.className = 'bar ' + b.cls;
-      bar.style.height = '0px';
-      wrap.appendChild(bar);
-      setTimeout(() => {
-        bar.style.height = Math.round((b.v / maxVal) * 130) + 'px';
-      }, 400);
+  if (chart) {
+    barData.forEach(d => {
+      const group = document.createElement('div'); group.className = 'bar-group';
+      const wrap = document.createElement('div'); wrap.className = 'bar-wrap';
+      [{ v: d.a, cls: '' }, { v: d.b, cls: 'b' }, { v: d.c * 3, cls: 'c' }].forEach(b => {
+        const bar = document.createElement('div'); bar.className = 'bar ' + b.cls; bar.style.height = '0px';
+        wrap.appendChild(bar);
+        setTimeout(() => { bar.style.height = Math.round((b.v / 100) * 130) + 'px'; }, 400);
+      });
+      const label = document.createElement('div'); label.className = 'bar-label'; label.textContent = d.label;
+      group.appendChild(wrap); group.appendChild(label); chart.appendChild(group);
     });
-
-    const label = document.createElement('div');
-    label.className = 'bar-label';
-    label.textContent = d.label;
-
-    group.appendChild(wrap);
-    group.appendChild(label);
-    chart.appendChild(group);
-  });
-
-  // ── KPI BARS ANIMATE ON SCROLL ──
-  const kpiObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.setProperty('--pct', e.target.dataset.pct || '80%');
-      }
-    });
-  }, { threshold: 0.3 });
+  }
 </script>
 </body>
 </html>
