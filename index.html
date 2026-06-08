@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicolás Barragán · Data Analyst & Systems Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c10;
+      --surface: #0d1117;
+      --surface2: #161b22;
+      --border: #21262d;
+      --accent: #00e5a0;
+      --accent2: #0099ff;
+      --accent3: #ff6b35;
+      --text: #e6edf3;
+      --text-muted: #7d8590;
+      --text-dim: #484f58;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Plus Jakarta Sans', sans-serif;
+      --glow: 0 0 20px rgba(0, 229, 160, 0.15);
+      --glow2: 0 0 20px rgba(0, 153, 255, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── GRID LINES ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0,229,160,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,160,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(8,12,16,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-logo span { color: var(--text-muted); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .hero-name .accent { color: var(--accent); }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: #8b949e;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      max-width: 520px;
+    }
+
+    .hero-desc strong { color: var(--text); font-weight: 600; }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      box-shadow: 0 0 30px rgba(0,229,160,0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 28px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 13px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── HERO CARD ── */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(135deg, var(--accent), transparent 50%, var(--accent2));
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: var(--accent); }
+
+    .card-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-left: auto;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat {
+      padding: 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .stat.blue .stat-value { color: var(--accent2); }
+    .stat.orange .stat-value { color: var(--accent3); }
+
+    /* ── SECTION COMMON ── */
+    .section-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 60px;
+      max-width: 600px;
+    }
+
+    /* ── ABOUT / FILOSOFÍA ── */
+    #about { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 16px;
+      color: #8b949e;
+      line-height: 1.85;
+    }
+
+    .about-text p + p { margin-top: 20px; }
+    .about-text strong { color: var(--text); font-weight: 600; }
+
+    .philosophy-box {
+      border-left: 2px solid var(--accent);
+      padding: 24px 28px;
+      background: rgba(0,229,160,0.04);
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-top: 32px;
+    }
+
+    .philosophy-box::before {
+      content: '// mi filosofía';
+      display: block;
+      color: var(--text-dim);
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(0,153,255,0.08);
+      border: 1px solid rgba(0,153,255,0.2);
+      color: var(--accent2);
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-top: 28px;
+    }
+
+    .ai-badge svg { width: 14px; height: 14px; }
+
+    .pillars {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pillar {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+
+    .pillar:hover { border-color: var(--accent); }
+
+    .pillar-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .pillar-content h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .pillar-content p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── TECH STACK ── */
+    #stack { }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .stack-category {
+      background: var(--bg);
+      padding: 28px;
+    }
+
+    .stack-cat-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tech-tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 5px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: all 0.15s;
+      cursor: default;
+    }
+
+    .tech-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,0.06);
+    }
+
+    .tech-tag.ai {
+      border-color: rgba(0,153,255,0.3);
+      color: var(--accent2);
+      background: rgba(0,153,255,0.05);
+    }
+
+    /* ── POWER BI VISUAL ── */
+    #powerbi {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pbi-showcase {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .pbi-header {
+      background: var(--surface2);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pbi-header-title {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pbi-body {
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .pbi-kpis {
+      display: grid;
+      gap: 12px;
+    }
+
+    .pbi-kpi {
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pbi-kpi::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      width: var(--pct);
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .pbi-kpi.blue::after { background: var(--accent2); }
+    .pbi-kpi.orange::after { background: var(--accent3); }
+
+    .pbi-kpi-val {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .pbi-kpi.blue .pbi-kpi-val { color: var(--accent2); }
+    .pbi-kpi.orange .pbi-kpi-val { color: var(--accent3); }
+
+    .pbi-kpi-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── BAR CHART ── */
+    .pbi-chart {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 20px;
+    }
+
+    .chart-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 160px;
+    }
+
+    .bar-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .bar-wrap {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 130px;
+    }
+
+    .bar {
+      flex: 1;
+      background: var(--accent);
+      opacity: 0.7;
+      transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
+      cursor: default;
+      position: relative;
+    }
+
+    .bar:hover { opacity: 1; }
+
+    .bar.b { background: var(--accent2); opacity: 0.6; }
+    .bar.c { background: var(--accent3); opacity: 0.6; }
+
+    .bar-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+    }
+
+    .pbi-desc {
+      margin-top: 24px;
+      padding: 20px;
+      background: rgba(0,229,160,0.04);
+      border-left: 2px solid var(--accent);
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2px;
+      background: var(--border);
+    }
+
+    .project-card {
+      background: var(--bg);
+      padding: 32px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .project-card:hover { background: var(--surface); }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.3s;
+    }
+
+    .project-card:hover::before { height: 100%; }
+    .project-card.blue-accent::before { background: var(--accent2); }
+    .project-card.orange-accent::before { background: var(--accent3); }
+
+    .project-number {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .project-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .project-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .project-role {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .project-role.blue { color: var(--accent2); }
+    .project-role.orange { color: var(--accent3); }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .p-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .project-impact {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: rgba(0,229,160,0.04);
+      border: 1px solid rgba(0,229,160,0.1);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .project-impact.blue {
+      background: rgba(0,153,255,0.04);
+      border-color: rgba(0,153,255,0.1);
+      color: var(--accent2);
+    }
+
+    .project-impact.orange {
+      background: rgba(255,107,53,0.04);
+      border-color: rgba(255,107,53,0.1);
+      color: var(--accent3);
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-item:last-child { border-bottom: none; }
+
+    .timeline-meta {
+      padding: 32px 24px;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .timeline-period {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .timeline-period.blue { color: var(--accent2); }
+    .timeline-period.orange { color: var(--accent3); }
+
+    .timeline-company {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .timeline-location {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .timeline-content {
+      padding: 32px;
+    }
+
+    .timeline-role {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .timeline-summary {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .achievement-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .achievement {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .achievement::before {
+      content: '→';
+      color: var(--accent);
+      font-family: var(--mono);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── CONTACT ── */
+    #contact { }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .contact-text {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .contact-text strong { color: var(--text); }
+
+    .contact-links {
+      display: grid;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .contact-link-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(0,229,160,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .contact-link-info h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .contact-link-info p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.2);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 24px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,229,160,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(0,229,160,0); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+
+      #hero { padding: 100px 24px 60px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-card { display: none; }
+
+      .section-wrap { padding: 60px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .stack-grid { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; }
+      .timeline-meta { border-right: none; border-bottom: 1px solid var(--border); }
+      .pbi-body { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 200;
+      transition: width 0.1s;
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="nav-logo">nb<span>.</span>dev</div>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#projects">Proyectos</a></li>
+    <li><a href="#experience">Experiencia</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Available for new opportunities</div>
+      <h1 class="hero-name">
+        Nicolás<br><span class="accent">Barragán</span>
+      </h1>
+      <div class="hero-title">Data Analyst &amp; Systems Developer · Facatativá, Colombia</div>
+      <p class="hero-desc">
+        Más de 4 años convirtiendo procesos manuales en <strong>flujos digitales que funcionan de verdad</strong>. Diseño pipelines ETL, sistemas web internos completos y dashboards ejecutivos. Si puedo imaginarlo, puedo construirlo — y si hay IA que lo haga más rápido, la uso.
+      </p>
+      <div class="hero-cta">
+        <a href="mailto:nico0223@outlook.es" class="btn-primary">→ Escribirme</a>
+        <a href="CV_Nicolas_Barragan_2026.pdf" class="btn-secondary" download>↓ Descargar CV</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="card-header">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="card-title">metrics.overview</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-value">4+</div>
+          <div class="stat-label">Años de experiencia</div>
+        </div>
+        <div class="stat blue">
+          <div class="stat-value">6+</div>
+          <div class="stat-label">Sistemas construidos</div>
+        </div>
+        <div class="stat orange">
+          <div class="stat-value">60%→0.1%</div>
+          <div class="stat-label">Reducción de faltantes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">40%</div>
+          <div class="stat-label">Mejora respuesta ops</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-label">Sobre mí</div>
+    <h2 class="section-title">Pienso en sistemas,<br>construyo soluciones.</h2>
+
+    <div class="about-grid">
+      <div>
+        <div class="about-text">
+          <p>Mi mentalidad parte de una pregunta simple: <strong>¿cómo hacemos esto mejor?</strong> Eso me ha llevado a diseñar desde pipelines ETL para monitoreo en tiempo real de rutas aéreas y marítimas, hasta ecosistemas completos de sistemas web internos que reemplazaron flujos manuales en empresas de logística y retail.</p>
+          <p>Combino el <strong>análisis de datos</strong> con el <strong>desarrollo full-stack</strong>. No solo identifico el problema — construyo la solución. Y en 2026, eso incluye usar IA generativa como copiloto para llegar más lejos en menos tiempo.</p>
+          <p>Actualmente en <strong>séptimo semestre de Ingeniería de Sistemas</strong> en UNAD, con inglés B2 funcional y experiencia coordinando equipos técnicos internacionales.</p>
+        </div>
+
+        <div class="philosophy-box">
+          En tecnología el límite no lo pone la herramienta<br>
+          — lo pone el alcance al que decides llegar.
+        </div>
+
+        <div class="ai-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          Trabajo activamente con IA generativa para ampliar mis resultados
+        </div>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-icon">📊</div>
+          <div class="pillar-content">
+            <h4>Análisis orientado a decisión</h4>
+            <p>Los datos solos no valen nada. Construyo dashboards y reportes que llevan a acción concreta en gerencia y operaciones.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">⚙️</div>
+          <div class="pillar-content">
+            <h4>Automatización real</h4>
+            <p>No solo reportes bonitos — elimino el trabajo manual con GAS, Power Automate y pipelines Python que corren solos.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🏗️</div>
+          <div class="pillar-content">
+            <h4>Sistemas completos, de punta a punta</h4>
+            <p>Del requerimiento al deploy. CRM, WMS, nómina, logística — los construí desde cero coordinando con áreas de negocio.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🤖</div>
+          <div class="pillar-content">
+            <h4>IA como multiplicador</h4>
+            <p>Uso prompt engineering y herramientas de IA para iterar más rápido, documentar mejor y resolver problemas complejos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STACK ══════════ -->
+<section id="stack">
+  <div class="section-wrap">
+    <div class="section-label">Stack técnico</div>
+    <h2 class="section-title">Herramientas que uso,<br>resultados que entrego.</h2>
+    <p class="section-sub">No es una lista de cosas que "conozco" — es lo que uso activamente para construir y resolver.</p>
+
+    <div class="stack-grid">
+      <div class="stack-category">
+        <div class="stack-cat-title">// BI &amp; Análisis</div>
+        <div class="tech-list">
+          <span class="tech-tag">Power BI Avanzado</span>
+          <span class="tech-tag">DAX Avanzado</span>
+          <span class="tech-tag">Power Query</span>
+          <span class="tech-tag">Excel Avanzado</span>
+          <span class="tech-tag">Tableau</span>
+          <span class="tech-tag">Visualización de Datos</span>
+          <span class="tech-tag">KPIs Operativos</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">// Bases de Datos</div>
+        <div class="tech-list">
+          <span class="tech-tag">SQL Server</span>
+          <span class="tech-tag">Firestore / Firebase</span>
+          <span class="tech-tag">Queries Complejos</span>
+          <span class="tech-tag">Modelado de Datos</span>
+          <span class="tech-tag">ETL Pipelines</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">// Desarrollo</div>
+        <div class="tech-list">
+          <span class="tech-tag">Google Apps Script</span>
+          <span class="tech-tag">JavaScript (ES5+)</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Pandas / NumPy</span>
+          <span class="tech-tag">REST APIs</span>
+          <span class="tech-tag">Firebase Auth</span>
+          <span class="tech-tag">HTML / CSS</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">// Automatización</div>
+        <div class="tech-list">
+          <span class="tech-tag">Power Automate</span>
+          <span class="tech-tag">Workflows Digitales</span>
+          <span class="tech-tag">Integración Siigo API</span>
+          <span class="tech-tag">ETL Automatizado</span>
+          <span class="tech-tag">GAS Triggers</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">// Sistemas &amp; ERP</div>
+        <div class="tech-list">
+          <span class="tech-tag">CRM Development</span>
+          <span class="tech-tag">WMS / Inventarios</span>
+          <span class="tech-tag">Facturación DIAN</span>
+          <span class="tech-tag">Nómina Colombia</span>
+          <span class="tech-tag">Módulos RRHH</span>
+          <span class="tech-tag">Logística</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">// IA &amp; Productividad</div>
+        <div class="tech-list">
+          <span class="tech-tag ai">Prompt Engineering</span>
+          <span class="tech-tag ai">Claude AI</span>
+          <span class="tech-tag ai">IA Generativa Aplicada</span>
+          <span class="tech-tag">Git / GitHub</span>
+          <span class="tech-tag">Google Workspace</span>
+          <span class="tech-tag">Postman</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ POWER BI VISUAL ══════════ -->
+<section id="powerbi">
+  <div class="section-wrap">
+    <div class="section-label">Power BI en Acción</div>
+    <h2 class="section-title">Del dato al insight<br>ejecutivo en segundos.</h2>
+    <p class="section-sub">Una muestra del tipo de dashboards que construyo: métricas de cadena de frío y logística en tiempo real.</p>
+
+    <div class="pbi-showcase">
+      <div class="pbi-header">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="pbi-header-title">Dashboard · Cold Chain &amp; Logistics KPIs · Power BI (preview)</span>
+      </div>
+
+      <div class="pbi-body">
+        <div class="pbi-kpis">
+          <div class="pbi-kpi" style="--pct: 99%">
+            <div class="pbi-kpi-val">99.9%</div>
+            <div class="pbi-kpi-label">Eficiencia de abastecimiento</div>
+          </div>
+          <div class="pbi-kpi blue" style="--pct: 75%">
+            <div class="pbi-kpi-val">-40%</div>
+            <div class="pbi-kpi-label">Tiempo respuesta operativa</div>
+          </div>
+          <div class="pbi-kpi orange" style="--pct: 25%">
+            <div class="pbi-kpi-val">-25%</div>
+            <div class="pbi-kpi-label">Merma en cadena de frío</div>
+          </div>
+          <div class="pbi-kpi" style="--pct: 35%">
+            <div class="pbi-kpi-val">+35%</div>
+            <div class="pbi-kpi-label">Precisión de pronóstico</div>
+          </div>
+          <div class="pbi-kpi blue" style="--pct: 30%">
+            <div class="pbi-kpi-val">-30%</div>
+            <div class="pbi-kpi-label">Desperdicio de inventario</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pbi-chart">
+            <div class="chart-title">// temperatura promedio por ruta de despacho (°C) · índice de calor acumulado</div>
+            <div class="bar-chart" id="barChart">
+              <!-- bars injected by JS -->
+            </div>
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Temp Promedio</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div> Índice Calor</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent3)"></div> Alertas</div>
+            </div>
+          </div>
+
+          <div class="pbi-desc">
+            💡 Este dashboard fue construido con <strong>DAX Avanzado</strong> integrando sensores TIVE + GPS Yoyevu, múltiples fuentes SQL Server, rutas aéreas/marítimas/terrestres a <strong>7 países</strong>. Resultado: reducción del 40% en tiempos de respuesta operativa y 25% menos de mermas.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROJECTS ══════════ -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-label">Proyectos</div>
+    <h2 class="section-title">Sistemas que construí<br>y que hoy están en producción.</h2>
+    <p class="section-sub">Cada proyecto nació de un proceso manual que alguien estaba cansado de hacer. Yo construí la solución.</p>
+
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-number">01 · Full-Stack</div>
+        <div class="project-icon">🗺️</div>
+        <div class="project-name">CRM Comercial con Geofencing</div>
+        <div class="project-role">Google Apps Script · Firebase · Maps API</div>
+        <div class="project-desc">Sistema web interno completo para gestión de fuerza de ventas en campo: roles diferenciados, geofencing para validar visitas, registro de actividad comercial y dashboard de KPIs de ventas en tiempo real.</div>
+        <div class="project-tags">
+          <span class="p-tag">GAS</span><span class="p-tag">Firestore</span><span class="p-tag">Firebase Auth</span><span class="p-tag">Maps API</span><span class="p-tag">Dashboard</span>
+        </div>
+        <div class="project-impact">→ Eliminó el 100% del registro manual de actividad en campo</div>
+      </div>
+
+      <div class="project-card blue-accent">
+        <div class="project-number">02 · Backend &amp; Integración</div>
+        <div class="project-icon">📦</div>
+        <div class="project-name">WMS de Inventario (Bochica)</div>
+        <div class="project-role blue">Python · Firestore · REST API · Multi-bodega</div>
+        <div class="project-desc">Sistema de gestión de almacén con motor de traducción de SKUs entre bodegas vía caché inteligente en Firestore. Soporte multi-bodega incluyendo operación Chile con colecciones regionalizadas y aislamiento de datos.</div>
+        <div class="project-tags">
+          <span class="p-tag">GAS</span><span class="p-tag">Firestore</span><span class="p-tag">Cache Engine</span><span class="p-tag">SKU Mapping</span><span class="p-tag">Multi-region</span>
+        </div>
+        <div class="project-impact blue">→ Consultas de minutos reducidas a segundos con caché Firestore</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">03 · ETL &amp; Analytics</div>
+        <div class="project-icon">🌡️</div>
+        <div class="project-name">Pipeline Cold Chain ETL</div>
+        <div class="project-role">Python · SQL Server · Power BI · TIVE API</div>
+        <div class="project-desc">Infraestructura ETL de monitoreo en tiempo real de cadena de frío integrando sensores IoT TIVE y GPS Yoyevu. Dashboards ejecutivos en Power BI con DAX avanzado para rutas aéreas, marítimas y terrestres a 7 países.</div>
+        <div class="project-tags">
+          <span class="p-tag">Python</span><span class="p-tag">SQL Server</span><span class="p-tag">Power BI</span><span class="p-tag">DAX</span><span class="p-tag">IoT</span><span class="p-tag">ETL</span>
+        </div>
+        <div class="project-impact">→ -25% mermas · -40% tiempo respuesta operativa</div>
+      </div>
+
+      <div class="project-card orange-accent">
+        <div class="project-number">04 · Integración Fiscal</div>
+        <div class="project-icon">🧾</div>
+        <div class="project-name">Facturación &amp; Nómina Digital</div>
+        <div class="project-role orange">Siigo API · GAS · Firebase · DIAN</div>
+        <div class="project-desc">Sistema de validación y aprobación de pagos integrado con Siigo para facturación electrónica DIAN. Módulo de nómina ajustado a legislación colombiana 2026 (quincenal, ARL, retefuente, UVT) con cálculos automáticos.</div>
+        <div class="project-tags">
+          <span class="p-tag">Siigo API</span><span class="p-tag">GAS</span><span class="p-tag">DIAN</span><span class="p-tag">Nómina CO</span><span class="p-tag">Firestore</span>
+        </div>
+        <div class="project-impact orange">→ Flujos de facturación y nómina 100% digitalizados</div>
+      </div>
+
+      <div class="project-card blue-accent">
+        <div class="project-number">05 · Logística Operativa</div>
+        <div class="project-icon">🚛</div>
+        <div class="project-name">App de Ruteo Logístico</div>
+        <div class="project-role blue">GAS · Firestore · Maps · KPI Engine</div>
+        <div class="project-desc">Aplicación web para optimización de rutas de entrega: gestión de jaulas, alistamiento, asignación de rutas, seguimiento de recorrido, registro de entregas y módulo de KPIs operativos. Usado por operadores en campo desde celular.</div>
+        <div class="project-tags">
+          <span class="p-tag">GAS</span><span class="p-tag">Firestore</span><span class="p-tag">Routing</span><span class="p-tag">Mobile-first</span><span class="p-tag">KPIs</span>
+        </div>
+        <div class="project-impact blue">→ Optimización de cobertura y reducción de tiempos operativos</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">06 · Data &amp; RRHH</div>
+        <div class="project-icon">👥</div>
+        <div class="project-name">ETL Exógena DIAN &amp; RRHH</div>
+        <div class="project-role">Python · Pandas · SQL · ETL</div>
+        <div class="project-desc">Pipeline Python para generación automática de reporte exógena DIAN año fiscal 2025 procesando datos heterogéneos de múltiples fuentes. Reconciliación de datos de ~240 empleados entre dos empresas cruzando fuentes dispares.</div>
+        <div class="project-tags">
+          <span class="p-tag">Python</span><span class="p-tag">Pandas</span><span class="p-tag">DIAN</span><span class="p-tag">ETL</span><span class="p-tag">240 empleados</span>
+        </div>
+        <div class="project-impact">→ Brechas críticas identificadas en datos fiscales y de RRHH</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ EXPERIENCE ══════════ -->
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-label">Experiencia</div>
+    <h2 class="section-title">El camino hasta aquí.</h2>
+    <p class="section-sub">Cada rol me enseñó algo que uso en el siguiente.</p>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <div class="timeline-period">Feb 2026 – Jun 2026</div>
+          <div class="timeline-company">Calabaza Pets / Luciérnagas</div>
+          <div class="timeline-location">Mosquera, Colombia</div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-role">Analista de Datos &amp; Desarrollador de Sistemas</div>
+          <div class="timeline-summary">Rol híbrido donde diseñé y entregué un ecosistema de 6+ sistemas internos interconectados, reemplazando flujos manuales por soluciones digitales. Coordiné con equipo de desarrollo externo en China.</div>
+          <div class="achievement-list">
+            <div class="achievement">CRM comercial web con geofencing y dashboard de ventas — eliminó el 100% del registro manual en campo</div>
+            <div class="achievement">WMS con motor de traducción de SKUs y soporte multi-bodega (Colombia + Chile)</div>
+            <div class="achievement">Nómina digital ajustada a legislación colombiana 2026 con cálculos automáticos</div>
+            <div class="achievement">Integración con Siigo API para facturación electrónica DIAN</div>
+            <div class="achievement">Reconciliación de datos de ~240 empleados entre dos empresas</div>
+            <div class="achievement">Enlace técnico con equipo en China: requerimientos ES→EN, seguimiento de entregables</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <div class="timeline-period blue">Jun 2024 – Feb 2026</div>
+          <div class="timeline-company">The Elite Flower</div>
+          <div class="timeline-location">Facatativá, Colombia</div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-role">Ejecutivo de Procesos · Ingeniero Analista</div>
+          <div class="timeline-summary">Creé y lideré el área de cold chain analytics desde cero. Formé y gestioné un equipo de 4 personas. Identifiqué y negocié con proveedores tecnológicos (TIVE, Yoyevu) para la infraestructura de monitoreo.</div>
+          <div class="achievement-list">
+            <div class="achievement">Pipeline ETL para monitoreo en tiempo real integrando sensores TIVE + GPS a 7 países</div>
+            <div class="achievement">Dashboards ejecutivos en Power BI con DAX avanzado — reducción del 40% en tiempos de respuesta</div>
+            <div class="achievement">Análisis predictivo de cadena de frío — reducción del 25% en mermas</div>
+            <div class="achievement">Diseño y administración de bases de datos SQL Server para logística y calidad postcosecha</div>
+            <div class="achievement">Presentaciones ejecutivas a gerencia y clientes internacionales en inglés</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <div class="timeline-period orange">Jun 2022 – Jul 2024</div>
+          <div class="timeline-company">Jardines de Los Andes</div>
+          <div class="timeline-location">Facatativá, Colombia</div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-role">Logística de Inventarios → Analista de Inventarios</div>
+          <div class="timeline-summary">Progresé de analista junior a responsable de logística de inventario completa. Construí desde cero el área de BI para optimización de stocks en floricultura.</div>
+          <div class="achievement-list">
+            <div class="achievement">Reducción de faltantes de inventario del 60% al 0.1% en el primer mes como responsable</div>
+            <div class="achievement">Sistema de alertas automatizado con Power Automate para garantizar abastecimiento sin interrupciones</div>
+            <div class="achievement">Dashboards Power BI para métricas de inventario en tiempo real — reducción del 30% en desperdicios</div>
+            <div class="achievement">Forecast trimestral para pedidos especiales — mejora del 35% en precisión de pronósticos</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-label">Contacto</div>
+    <h2 class="section-title">¿Construimos algo<br>juntos?</h2>
+
+    <div class="contact-grid">
+      <div>
+        <div class="contact-text">
+          <p>Estoy buscando mi próximo rol como <strong>Data Analyst, BI Developer o Systems Developer</strong>. Me muevo bien en roles donde los datos se convierten en sistemas que funcionan.</p>
+          <p style="margin-top:16px">Si tu equipo tiene datos que no saben para qué sirven, procesos manuales que deberían ser automáticos, o necesitan a alguien que entienda tanto el negocio como el código — hablemos.</p>
+        </div>
+
+        <div class="availability-badge">
+          <span class="pulse"></span>
+          Disponible para nuevas oportunidades — Junio 2026
+        </div>
+      </div>
+
+      <div class="contact-links">
+        <a href="mailto:nico0223@outlook.es" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          <div class="contact-link-info">
+            <h4>Email</h4>
+            <p>nico0223@outlook.es</p>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/nicolasbarraganalfonso" class="contact-link" target="_blank">
+          <div class="contact-link-icon">in</div>
+          <div class="contact-link-info">
+            <h4>LinkedIn</h4>
+            <p>nicolasbarraganalfonso</p>
+          </div>
+        </a>
+        <a href="https://github.com/nbarragan" class="contact-link" target="_blank">
+          <div class="contact-link-icon">⌥</div>
+          <div class="contact-link-info">
+            <h4>GitHub</h4>
+            <p>github.com/nbarragan</p>
+          </div>
+        </a>
+        <a href="tel:+573177108769" class="contact-link">
+          <div class="contact-link-icon">☎</div>
+          <div class="contact-link-info">
+            <h4>Teléfono / WhatsApp</h4>
+            <p>(+57) 317 710 8769</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>nb.dev · Nicolás Barragán Alfonso · Facatativá, Colombia</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">// built with intention, not with templates</span>
+</footer>
+
+<script>
+  // ── SCROLL PROGRESS ──
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    progress.style.width = scrolled + '%';
+  });
+
+  // ── FADE UP ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── BAR CHART ──
+  const barData = [
+    { label: 'BOG→MIA', a: 85, b: 62, c: 8 },
+    { label: 'BOG→JFK', a: 78, b: 55, c: 12 },
+    { label: 'BOG→AMS', a: 91, b: 71, c: 5 },
+    { label: 'BOG→NRT', a: 96, b: 80, c: 3 },
+    { label: 'BOG→YYZ', a: 82, b: 60, c: 7 },
+    { label: 'BOG→GRU', a: 74, b: 48, c: 15 },
+    { label: 'BOG→MAD', a: 88, b: 68, c: 4 },
+  ];
+
+  const chart = document.getElementById('barChart');
+  const maxVal = 100;
+
+  barData.forEach(d => {
+    const group = document.createElement('div');
+    group.className = 'bar-group';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'bar-wrap';
+
+    [{ v: d.a, cls: '' }, { v: d.b, cls: 'b' }, { v: d.c * 3, cls: 'c' }].forEach(b => {
+      const bar = document.createElement('div');
+      bar.className = 'bar ' + b.cls;
+      bar.style.height = '0px';
+      wrap.appendChild(bar);
+      setTimeout(() => {
+        bar.style.height = Math.round((b.v / maxVal) * 130) + 'px';
+      }, 400);
+    });
+
+    const label = document.createElement('div');
+    label.className = 'bar-label';
+    label.textContent = d.label;
+
+    group.appendChild(wrap);
+    group.appendChild(label);
+    chart.appendChild(group);
+  });
+
+  // ── KPI BARS ANIMATE ON SCROLL ──
+  const kpiObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.setProperty('--pct', e.target.dataset.pct || '80%');
+      }
+    });
+  }, { threshold: 0.3 });
+</script>
+</body>
+</html>
